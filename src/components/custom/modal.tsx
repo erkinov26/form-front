@@ -31,17 +31,40 @@ export function AnimatedModal({
     const nameFromUrl = params.get("name");
     const phoneFromUrl = params.get("phone");
 
-    if (nameFromUrl) setFormData((prev) => ({ ...prev, name: nameFromUrl }));
-    if (phoneFromUrl) setFormData((prev) => ({ ...prev, phone: phoneFromUrl }));
+    setFormData({
+      name: nameFromUrl || "",
+      phone: phoneFromUrl?.startsWith("+998") ? phoneFromUrl : "+998",
+    });
   }, []);
+
 
   const [errors, setErrors] = useState<null | string>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    if (name === "phone") {
+      // Faqat raqamlarni olish
+      let raw = value.replace(/\D/g, "");
+
+      // Agar 998 bilan boshlanmasa, majburan 998 ni qo‘shmang
+      // Balki foydalanuvchi noto‘g‘ri urinish qilgan
+      if (!raw.startsWith("998")) {
+        // 998 ni bir marta qo‘shamiz faqat agar noto‘g‘ri kiritilsa
+        raw = "998" + raw.replace(/^998+/, "");
+      }
+
+      // Faqat 9 ta raqamdan keyin qisqartiramiz
+      const final = "+998" + raw.slice(3, 12);
+      setFormData((prev) => ({ ...prev, phone: final }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
+
     setErrors(null);
   };
+
+
 
   const { isPending, mutate, isSuccess } = useMutation({
     mutationFn: async (data: { ism: string; telefon: string }) => {
@@ -111,11 +134,27 @@ export function AnimatedModal({
                 name="phone"
                 autoComplete="tel"
                 type="tel"
+                inputMode="numeric"
+                maxLength={13}
                 required
-                placeholder="Telefon raqamingizni kiriting"
+                placeholder="+998 90 123 45 67"
                 value={formData.phone}
                 onChange={handleChange}
+                onKeyDown={(e) => {
+                  const input = e.target as HTMLInputElement;
+                  const caret = input.selectionStart || 0;
+                  if (
+                    caret <= 4 &&
+                    ["Backspace", "Delete", "ArrowLeft"].includes(e.key)
+                  ) {
+                    e.preventDefault();
+                  }
+                  if (caret < 4 && e.key.length === 1 && /\d/.test(e.key)) {
+                    e.preventDefault();
+                  }
+                }}
               />
+
             </div>
             <button
               type="submit"
@@ -126,7 +165,7 @@ export function AnimatedModal({
                   "linear-gradient(90deg, #027D1D 0%, #31BA4F 48.08%, #007B1B 100%)",
               }}
             >
-              {isPending ? "Yuborilmoqda..." : "RO‘YXATDAN O‘TISH"}
+              {isPending ? "Yuborilmoqda..." : "Yuborish"}
             </button>
           </form>
         </ModalContent>
