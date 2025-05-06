@@ -25,7 +25,16 @@ export function AnimatedModal({
 }: {
   setIsSuccess: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const [formData, setFormData] = useState({ ism: "", telefon: "" });
+  const [formData, setFormData] = useState({ name: "", phone: "" });
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const nameFromUrl = params.get("name");
+    const phoneFromUrl = params.get("phone");
+
+    if (nameFromUrl) setFormData((prev) => ({ ...prev, name: nameFromUrl }));
+    if (phoneFromUrl) setFormData((prev) => ({ ...prev, phone: phoneFromUrl }));
+  }, []);
+
   const [errors, setErrors] = useState<null | string>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +49,7 @@ export function AnimatedModal({
       return res.data;
     },
     onSuccess: () => {
-      setFormData({ ism: "", telefon: "" });
+      setFormData({ name: "", phone: "" });
     },
     onError: (error: ErrorResponse) => {
       console.log(error);
@@ -51,12 +60,12 @@ export function AnimatedModal({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.ism.trim() || !formData.telefon.trim()) {
+    if (!formData.name.trim() || !formData.phone.trim()) {
       setErrors("Iltimos, barcha maydonlarni to‘ldiring.");
       return;
     }
 
-    mutate(formData);
+    mutate({ ism: formData.name, telefon: formData.phone });
   };
 
   useEffect(() => {
@@ -87,20 +96,24 @@ export function AnimatedModal({
             <div>
               <Label>Ism</Label>
               <Input
-                name="ism"
+                name="name"
+                type="text"
+                autoComplete="name"
                 required
                 placeholder="Ismingizni kiriting"
-                value={formData.ism}
+                value={formData.name}
                 onChange={handleChange}
               />
             </div>
             <div className="my-4">
               <Label>Telefon Raqam</Label>
               <Input
-                name="telefon"
+                name="phone"
+                autoComplete="tel"
+                type="tel"
                 required
                 placeholder="Telefon raqamingizni kiriting"
-                value={formData.telefon}
+                value={formData.phone}
                 onChange={handleChange}
               />
             </div>
