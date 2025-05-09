@@ -6,7 +6,7 @@ import bgImage from '@/public/bg-reg.png'
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 
-type EducationType = 'Kunduzgi' | 'Sirtqi oddiy' | 'Sirtqi stajli';
+type EducationType = 'Bakalavr kunduzgi' | 'Magistratura';
 
 type DirectionItem = {
   name: string;
@@ -107,25 +107,25 @@ export default function Registration() {
   ];
 
   const data: DirectionItem[] = [
-    { name: 'Jahon iqtisodiyoti va xalqaro iqtisodiy munosabatlar', Kunduzgi: true, 'Sirtqi oddiy': false, 'Sirtqi stajli': false },
-    { name: 'Tarix', Kunduzgi: true, 'Sirtqi oddiy': true, 'Sirtqi stajli': false },
-    { name: 'Xorijiy til va adabiyoti', Kunduzgi: true, 'Sirtqi oddiy': false, 'Sirtqi stajli': false },
-    { name: 'Boshlang‘ich ta‘lim', Kunduzgi: true, 'Sirtqi oddiy': false, 'Sirtqi stajli': true },
-    { name: 'Maktabgacha ta‘lim', Kunduzgi: true, 'Sirtqi oddiy': false, 'Sirtqi stajli': true },
-    { name: 'Psixologiya', Kunduzgi: true, 'Sirtqi oddiy': true, 'Sirtqi stajli': false },
-    { name: 'Maxsus pedagogika', Kunduzgi: true, 'Sirtqi oddiy': false, 'Sirtqi stajli': false },
-    { name: 'Iqtisodiyot', Kunduzgi: true, 'Sirtqi oddiy': true, 'Sirtqi stajli': false },
-    { name: 'Moliya va moliyaviy texnologiyalar', Kunduzgi: true, 'Sirtqi oddiy': true, 'Sirtqi stajli': false },
-    { name: 'Biznesni boshqarish', Kunduzgi: true, 'Sirtqi oddiy': false, 'Sirtqi stajli': false },
-    { name: 'Sanoat muhandisligi va menejmenti', Kunduzgi: true, 'Sirtqi oddiy': false, 'Sirtqi stajli': false },
-    { name: 'Kompyuter injiniringi', Kunduzgi: true, 'Sirtqi oddiy': true, 'Sirtqi stajli': false },
-    { name: "Musiqa ta'limi", Kunduzgi: true, 'Sirtqi oddiy': false, 'Sirtqi stajli': true },
-    { name: 'Turizm va mehmondo’stlik', Kunduzgi: true, 'Sirtqi oddiy': false, 'Sirtqi stajli': false },
-    { name: 'Jurnalistika', Kunduzgi: true, 'Sirtqi oddiy': true, 'Sirtqi stajli': false },
-    { name: 'Amaliy matematika', Kunduzgi: true, 'Sirtqi oddiy': false, 'Sirtqi stajli': false }
+    { name: 'Jahon iqtisodiyoti va xalqaro iqtisodiy munosabatlar', 'Bakalavr kunduzgi': true, 'Magistratura': true, },
+    { name: 'Tarix', 'Bakalavr kunduzgi': true, 'Magistratura': true },
+    { name: 'Xorijiy til va adabiyoti', 'Bakalavr kunduzgi': true, 'Magistratura': true, },
+    { name: 'Boshlang‘ich ta‘lim', 'Bakalavr kunduzgi': true, 'Magistratura': true, },
+    { name: 'Maktabgacha ta‘lim', 'Bakalavr kunduzgi': true, 'Magistratura': true, },
+    { name: 'Psixologiya', 'Bakalavr kunduzgi': true, 'Magistratura': true },
+    { name: 'Maxsus pedagogika', 'Bakalavr kunduzgi': true, 'Magistratura': true, },
+    { name: 'Iqtisodiyot', 'Bakalavr kunduzgi': true, 'Magistratura': true },
+    { name: 'Moliya va moliyaviy texnologiyalar', 'Bakalavr kunduzgi': true, 'Magistratura': true },
+    { name: 'Biznesni boshqarish', 'Bakalavr kunduzgi': true, 'Magistratura': true, },
+    { name: 'Sanoat muhandisligi va menejmenti', 'Bakalavr kunduzgi': true, 'Magistratura': true, },
+    { name: 'Kompyuter injiniringi', 'Bakalavr kunduzgi': true, 'Magistratura': true },
+    { name: "Musiqa ta'limi", 'Bakalavr kunduzgi': true, 'Magistratura': true, },
+    { name: 'Turizm va mehmondo’stlik', 'Bakalavr kunduzgi': true, 'Magistratura': true, },
+    { name: 'Jurnalistika', 'Bakalavr kunduzgi': true, 'Magistratura': true },
+    { name: 'Amaliy matematika', 'Bakalavr kunduzgi': true, 'Magistratura': true, }
   ];
 
-  const educationTypes: EducationType[] = ['Kunduzgi', 'Sirtqi oddiy', 'Sirtqi stajli'];
+  const educationTypes: EducationType[] = ['Bakalavr kunduzgi', 'Magistratura'];
 
   const filteredDirections = educationType ? data.filter((item) => item[educationType]) : [];
 
@@ -133,16 +133,16 @@ export default function Registration() {
     <div className={`relative sm:flex w-full min-h-screen bg-center bg-none bg-cover`} style={{
       backgroundImage: isLargeScreen ? `url(${bgImage})` : 'none',
     }}>
-      <div className="sm:w-1/2 px-[6vw] w-full sm:min-h-screen bg-white py-[3vw]">
+      <div className="sm:w-1/2 px-[6vw] w-full h-screen bg-white py-[2vw]">
         <div>
 
           {isSuccess ? <div className='flex items-center flex-col min-h-[80vh] justify-center'>           <img src={logo} alt="univer-logo" className="sm:w-[10vw] sm:mt-[1vw]" /><p className="font-bebas sm:text-[4vw] text-center text-[8vw]  mt-[2vw] leading-[120%] sm:w-[75%]">
             <strong className="text-[#0B4075]">Tabriklaymiz</strong> {"talaba bo'lish uchun arizani to'ldirdingiz"}
-          </p></div> : (<>               <img src={logo} alt="univer-logo" className="sm:w-[10vw] sm:mt-[1vw]" />     <p className="font-bebas sm:text-[2vw] text-[8vw]  mt-[2vw] leading-[120%] sm:w-[75%]">
+          </p></div> : (<>               <img src={logo} alt="univer-logo" className="sm:w-[10vw]" />     <p className="font-bebas sm:text-[1.5vw] text-[8vw]  mt-[1vw] leading-[120%] sm:w-[75%]">
             <strong className="text-[#0B4075]">Nordik universitetida</strong> {"talaba bo'lish uchun pastdagi formani to'ldiring"}
           </p>
 
-            <div className="flex flex-col sm:gap-[1.5vw] gap-[3vw] mt-[2vw]">
+            <div className="flex flex-col sm:gap-[1vw] gap-[3vw] mt-[2vw]">
               <div className="flex flex-col gap-[0.5vw]">
                 <label className="sm:text-[1vw] text-[4vw]" >Ism</label>
                 <input
@@ -226,8 +226,8 @@ export default function Registration() {
         </div>
       </div>
 
-      <div className="sm:w-1/2 hidden sm:flex">
-        <img src={people} alt="people" className="w-full" />
+      <div className="sm:w-1/2 hidden sm:flex items-end justify-end">
+        <img src={people} alt="people" className="h-[80vh]" />
       </div>
     </div>
   );
