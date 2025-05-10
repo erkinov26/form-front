@@ -8,11 +8,11 @@ import axios from 'axios';
 
 type EducationType = 'Bakalavr kunduzgi' | 'Magistratura';
 
-type DirectionItem = {
-  name: string;
-} & {
-  [key in EducationType]: boolean;
-};
+// type DirectionItem = {
+//   name: string;
+// } & {
+//   [key in EducationType]: boolean;
+// };
 
 export default function Registration() {
   const [fullName, setFullName] = useState('');
@@ -106,28 +106,28 @@ export default function Registration() {
     'Jizzax', 'Sirdaryo', 'Navoiy', 'Qoraqalpogʻiston Respublikasi',
   ];
 
-  const data: DirectionItem[] = [
-    { name: 'Jahon iqtisodiyoti va xalqaro iqtisodiy munosabatlar', 'Bakalavr kunduzgi': true, 'Magistratura': true, },
-    { name: 'Tarix', 'Bakalavr kunduzgi': true, 'Magistratura': true },
-    { name: 'Xorijiy til va adabiyoti', 'Bakalavr kunduzgi': true, 'Magistratura': true, },
-    { name: 'Boshlang‘ich ta‘lim', 'Bakalavr kunduzgi': true, 'Magistratura': true, },
-    { name: 'Maktabgacha ta‘lim', 'Bakalavr kunduzgi': true, 'Magistratura': true, },
-    { name: 'Psixologiya', 'Bakalavr kunduzgi': true, 'Magistratura': true },
-    { name: 'Maxsus pedagogika', 'Bakalavr kunduzgi': true, 'Magistratura': true, },
-    { name: 'Iqtisodiyot', 'Bakalavr kunduzgi': true, 'Magistratura': true },
-    { name: 'Moliya va moliyaviy texnologiyalar', 'Bakalavr kunduzgi': true, 'Magistratura': true },
-    { name: 'Biznesni boshqarish', 'Bakalavr kunduzgi': true, 'Magistratura': true, },
-    { name: 'Sanoat muhandisligi va menejmenti', 'Bakalavr kunduzgi': true, 'Magistratura': true, },
-    { name: 'Kompyuter injiniringi', 'Bakalavr kunduzgi': true, 'Magistratura': true },
-    { name: "Musiqa ta'limi", 'Bakalavr kunduzgi': true, 'Magistratura': true, },
-    { name: 'Turizm va mehmondo’stlik', 'Bakalavr kunduzgi': true, 'Magistratura': true, },
-    { name: 'Jurnalistika', 'Bakalavr kunduzgi': true, 'Magistratura': true },
-    { name: 'Amaliy matematika', 'Bakalavr kunduzgi': true, 'Magistratura': true, }
-  ];
+  const data: Record<EducationType, string[]> = {
+    'Bakalavr kunduzgi': [
+      'Jahon iqtisodiyoti va xalqaro iqtisodiy munosabatlar',
+      'Tarix', 'Xorijiy til va adabiyoti', 'Boshlang‘ich ta‘lim',
+      'Maktabgacha ta‘lim', 'Psixologiya', 'Maxsus pedagogika',
+      'Iqtisodiyot', 'Moliya va moliyaviy texnologiyalar',
+      'Biznesni boshqarish', 'Sanoat muhandisligi va menejmenti',
+      'Kompyuter injiniringi', "Musiqa ta'limi", 'Turizm va mehmondo’stlik',
+      'Jurnalistika', 'Amaliy matematika'
+    ],
+    'Magistratura': [
+      'Pedagogika', 'Xorijiy til va adabiyoti', "Musiqa ta'limi va san'at",
+      "Ta'lim muassasalari boshqaruvi", "Jurnalistika",
+      "Ta'lim va tarbiya nazariyasi va metodikasi(boshlang'ich ta'lim)",
+      "Ta'lim va tarbiya nazariyasi va metodikasi(Maktabgacha ta'lim)",
+      "Jahon iqtisodiyoti", "Iqtisodiyot (tarmoqlar va sohalar bo'yicha)",
+      "Ma'lumot ilmi (DATA SCIENCE)", "Turizm va mehmondo'stlik",
+      "Amaliy matematika", "Kompyuter injiniringi"
+    ]
+  };
 
   const educationTypes: EducationType[] = ['Bakalavr kunduzgi', 'Magistratura'];
-
-  const filteredDirections = educationType ? data.filter((item) => item[educationType]) : [];
 
   return (
     <div className={`relative sm:flex w-full min-h-screen bg-center bg-none bg-cover`} style={{
@@ -194,23 +194,25 @@ export default function Registration() {
                 </select>
                 {localErrors.educationType && <span className="text-red-500 sm:text-[1vw]">{localErrors.educationType}</span>}
               </div>
-              {educationType && (
-                <div className="flex flex-col gap-[0.5vw]">
-                  <label className="sm:text-[1vw] text-[4vw]">{"Yo'nalish"}</label>
-                  <select
-                    onChange={(e) => setDirection(e.target.value)}
-                    className="w-full sm:h-[3vw] h-[10vw] sm:text-[1vw] text-[4vw] sm:px-[1vw] px-[4vw] border border-gray-300 rounded-sm"
-                  >
-                    <option value="">{"Yo'nalishni"} tanlang</option>
-                    {filteredDirections.map((item) => (
-                      <option key={item.name} value={item.name}>
-                        {item.name}
+              <div className="flex flex-col gap-[0.5vw]">
+                <label className="sm:text-[1vw] text-[4vw]">Yo'nalishni tanlang</label>
+                <select
+                  onChange={(e) => setDirection(e.target.value)}
+                  value={direction}
+                  className="w-full sm:h-[3vw] h-[10vw] sm:text-[1vw] text-[4vw] sm:px-[1vw] px-[4vw] border border-gray-300 rounded-sm"
+                  disabled={!educationType}
+                >
+                  <option value="">Yo'nalishni tanlang</option>
+                  {educationType &&
+                    data[educationType]?.map((item) => (
+                      <option key={item} value={item}>
+                        {item}
                       </option>
                     ))}
-                  </select>
-                  {localErrors.direction && <span className="text-red-500 sm:text-[1vw]">{localErrors.direction}</span>}
-                </div>
-              )}
+                </select>
+                {localErrors.direction && <span className="text-red-500 sm:text-[1vw]">{localErrors.direction}</span>}
+              </div>
+
 
               {errors && <p className='text-center text-red-400 text-0.5vw'>{errors}</p>}
 
@@ -226,9 +228,10 @@ export default function Registration() {
         </div>
       </div>
 
-      <div className="sm:w-1/2 hidden sm:flex items-end justify-end">
-        <img src={people} alt="people" className="h-[80vh]" />
+      <div className="sm:w-1/2 h-screen hidden sm:flex items-end">
+        <img src={people} alt="students" className="w-full object-cover" />
       </div>
+
     </div>
   );
 }
